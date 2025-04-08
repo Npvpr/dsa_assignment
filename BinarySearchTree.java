@@ -9,6 +9,12 @@ public class BinarySearchTree {
     protected TreeNode root = EMPTY_TREE;
     protected int nodeCounter = 0;
 
+    // BinarySearchTree( ) - a constructor that creates an empty binary search tree,
+    // that stores the postcodes (strings).
+    public BinarySearchTree() {
+
+    }
+
     // int Count( ) - a method to return the number of postcodes in the BST, if the
     // BST is empty 0
     // is returned, otherwise the number of postcodes is returned.
@@ -56,36 +62,26 @@ public class BinarySearchTree {
     // Overloaded method for nodes other than the first node
     public void Insert(TreeNode root, String newValue) {
         if (root.getData().compareTo(newValue) == 0) {
-            // its a duplicate, so do nothing & finished
-        } else {
-            if (newValue.compareTo(root.getData()) < 0) // newValue < root.getData()
-            {
-                // System.out.println("Going Left");
-                if (root.getLeftChild() == EMPTY_TREE) {
-                    TreeNode newValueNode = new TreeNode(newValue, root); // parent is root
-
-                    root.setLeftChild(newValueNode); // replace root with the new value node, finished
-                } else {
-                    Insert(root.getLeftChild(), newValue);
-                }
-            } else {
-                // System.out.println("Going Right");
-                if (root.getData().compareTo(newValue) < 0) // root.getData() < newValue
-                {
-                    if (root.getRightChild() == EMPTY_TREE) {
-                        TreeNode newValueNode = new TreeNode(newValue, root); // parent is root
-
-                        root.setRightChild(newValueNode); // replace root with the new value node, finished
-                    } else {
-                        Insert(root.getRightChild(), newValue);
-                    }
-
-                }
-            }
-            nodeCounter++;
-            // System.out.println("New Number Added!!!");
+            return; // Duplicate - do nothing
         }
 
+        if (newValue.compareTo(root.getData()) < 0) {
+            if (root.getLeftChild() == EMPTY_TREE) {
+                TreeNode newNode = new TreeNode(newValue, root);
+                root.setLeftChild(newNode);
+                nodeCounter++; // Increment ONLY when adding node
+            } else {
+                Insert(root.getLeftChild(), newValue);
+            }
+        } else {
+            if (root.getRightChild() == EMPTY_TREE) {
+                TreeNode newNode = new TreeNode(newValue, root);
+                root.setRightChild(newNode);
+                nodeCounter++; // Increment ONLY when adding node
+            } else {
+                Insert(root.getRightChild(), newValue);
+            }
+        }
     }
 
     // bool Delete( string ) - a method to delete the postcode from the BST, if the
