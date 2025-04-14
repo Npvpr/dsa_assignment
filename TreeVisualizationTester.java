@@ -1,17 +1,38 @@
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.*;
 
 public class TreeVisualizationTester {
-    public static void main(String[] args) {
+
+    private static final String TEST_DIR = "London_Postcode_Test_Files";
+    private static final String fileName = "1000_London_Postcodes.txt";
+
+    public static void main(String[] args) throws IOException {
+
+        List<String> postcodes = loadPostcodes(TEST_DIR + File.separator + fileName);
 
         // Demonstrate Binary Search Tree
         // demonstrateBSTree();
 
         // Demonstrate AVL Tree
-        demonstrateAVLTree();
+        // demonstrateAVLTree();
+
+        // Demonstrate MinHeap
+        // demonstrateMinHeap();
 
         // Demonstrate Binary Search Tree: 1000 postcodes
+        // demonstrateBSTree1000(postcodes);
 
         // Demonstrate AVL tree: 1000 postcodes
+        demonstrateAVLTree1000(postcodes);
+
+        // Demonstrate MinHeap: 1000 postcodes
+        // demonstrateMinHeap1000(postcodes);
     }
 
     // Create and visualize an Binary Search tree
@@ -36,7 +57,7 @@ public class TreeVisualizationTester {
 
         // Visualize the AVL tree
         SwingUtilities.invokeLater(() -> {
-            TreeVisualizer visualizer = new TreeVisualizer(bsTree.root, "Binary Search Tree");
+            new TreeVisualizer(bsTree.root, "Binary Search Tree");
         });
 
     }
@@ -60,16 +81,102 @@ public class TreeVisualizationTester {
         avlTree.Insert("8");
         avlTree.Insert("9");
 
-        avlTree.Delete("6");
+        // avlTree.Delete("6");
 
         // Visualize the AVL tree
         SwingUtilities.invokeLater(() -> {
-            TreeVisualizer visualizer = new TreeVisualizer(avlTree.root, "AVL Tree (Balanced BST)");
+            new TreeVisualizer(avlTree.root, "AVL Tree (Balanced BST)");
         });
 
     }
 
-    public static void demonstrateBSTree1000() {
+    public static void demonstrateMinHeap() {
+        // Create array-based min-heap (from your initial implementation)
+        MinimumHeap minHeap = new MinimumHeap(15); // Assuming constructor takes maxSize
 
+        // Insert test values
+        minHeap.Insert("7");
+        minHeap.Insert("6");
+        minHeap.Insert("5");
+        minHeap.Insert("4");
+        minHeap.Insert("3");
+        minHeap.Insert("2");
+        minHeap.Insert("1");
+        minHeap.Insert("0");
+        minHeap.Insert("8");
+        minHeap.Insert("9");
+
+        // minHeap.ExtractMinimum();
+
+        // Convert heap array to list (ignore nulls beyond current size)
+        String[] heapArray = minHeap.getHeap(); // Requires getHeap() method
+        List<String> heapList = new ArrayList<>();
+        for (int i = 0; i < minHeap.Count(); i++) { // Use Count() to avoid nulls
+            heapList.add(heapArray[i]);
+        }
+
+        // Visualize the heap
+        SwingUtilities.invokeLater(() -> {
+            new HeapVisualizer(heapList, "Minimum Heap Visualization");
+        });
+    }
+
+    public static void demonstrateBSTree1000(List<String> postcodes){
+
+        BinarySearchTree bsTree = new BinarySearchTree();
+        for (String pc : postcodes) {
+            bsTree.Insert(pc);
+        }
+
+        // Visualize the AVL tree
+        SwingUtilities.invokeLater(() -> {
+            new TreeVisualizer(bsTree.root, "Binary Search Tree");
+        });
+    }
+
+    public static void demonstrateAVLTree1000(List<String> postcodes){       
+
+        AVLTree avlTree = new AVLTree();
+        for (String pc : postcodes) {
+            avlTree.Insert(pc);
+        }
+
+        // Visualize the AVL tree
+        SwingUtilities.invokeLater(() -> {
+            new TreeVisualizer(avlTree.root, "AVL Tree (Balanced BST)");
+        });
+
+    }
+
+    public static void demonstrateMinHeap1000(List<String> postcodes) {
+        // Create array-based min-heap (from your initial implementation)
+        MinimumHeap minHeap = new MinimumHeap(1001); // Assuming constructor takes maxSize
+
+        for (String pc: postcodes){
+            minHeap.Insert(pc);
+        }
+
+        // Convert heap array to list (ignore nulls beyond current size)
+        String[] heapArray = minHeap.getHeap(); // Requires getHeap() method
+        List<String> heapList = new ArrayList<>();
+        for (int i = 0; i < minHeap.Count(); i++) { // Use Count() to avoid nulls
+            heapList.add(heapArray[i]);
+        }
+
+        // Visualize the heap
+        SwingUtilities.invokeLater(() -> {
+            new HeapVisualizer(heapList, "Minimum Heap Visualization");
+        });
+    }
+
+    private static List<String> loadPostcodes(String filePath) throws IOException {
+        List<String> postcodes = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                postcodes.add(line.trim());
+            }
+        }
+        return postcodes;
     }
 }

@@ -33,7 +33,7 @@ public class Benchmark {
         List<String> warmupData = new ArrayList<>();
         for (int i = 0; i < 1000; i++)
             warmupData.add("WARMUP" + i);
-            createAndInsert(treeType, warmupData);
+            // createAndInsert(treeType, warmupData);
 
         // Actual benchmark
         for (String fileName : FILE_NAMES) {

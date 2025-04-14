@@ -163,7 +163,6 @@ public class BinarySearchTree {
     public String[] InOrder() {
         List<String> result = new ArrayList<>();
         inOrderRecord(root, result);
-        System.out.println(result);
         return result.toArray(new String[result.size()]);
     }
 
